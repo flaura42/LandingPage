@@ -4,14 +4,28 @@ document.addEventListener('DOMContentLoaded', () => {
   fillNav();
 })
 
-// Make nav li clickable
+// make nav li clickable
 const nav = document.getElementById('nav-list');
 nav.addEventListener('click', (items) => {
-  const item = items.target.firstChild;
-  location.href = item.href;
+  const item = items.target.firstChild.innerText;
+  location.href = `#section-${item}`;
+  activeSection(item);
 })
 
-// Add sections to the page
+// change active section
+function activeSection(item) {
+  const sections = document.getElementsByTagName('section');
+  for (const sect in sections) {
+    const item = sections[sect];
+    if (item.className == 'active-section') {
+      item.classList.remove('active-section');
+    }
+  }
+  const section = document.getElementById(`section-${item}`);
+  section.className = 'active-section'
+}
+
+// add sections to the page
 function addSections(num) {
   const main = document.getElementsByTagName('main')[0];
   const fragment = document.createDocumentFragment();
