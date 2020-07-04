@@ -4,6 +4,13 @@ document.addEventListener('DOMContentLoaded', () => {
   fillNav();
 })
 
+// Make nav li clickable
+const nav = document.getElementById('nav-list');
+nav.addEventListener('click', (items) => {
+  const item = items.target.firstChild;
+  location.href = item.href;
+})
+
 // Add sections to the page
 function addSections(num) {
   const main = document.getElementsByTagName('main')[0];
