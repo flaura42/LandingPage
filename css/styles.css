@@ -1,8 +1,12 @@
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   background-color: #000;
-  font: 20px/1.8 Verdana, sans-serif;
-  max-width: 1000px;
+  font: 14px/1.8 Verdana, sans-serif;
   margin: 0 auto;
+  max-width: 1000px;
 }
 
 header {
@@ -12,7 +16,7 @@ header {
 
 h1 {
   color: #eee;
-  font-size: 1.8em;
+  font-size: 2em;
   margin: 0;
   padding: 5px;
   text-align: center;
@@ -22,8 +26,16 @@ nav {
   background-color: #ddd;
 }
 
+.nav-label {
+  border-right: 2px solid #000;
+  margin: 0;
+  padding: 10px;
+}
+
 #nav-list {
-  display: inline-flex;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
   list-style-type: none;
   margin: 0;
   padding: 0;
@@ -31,7 +43,9 @@ nav {
 
 #nav-list li {
   border-right: 2px solid #000;
-  padding: 10px 20px;
+  flex-grow: 1;
+  text-align: center;
+  padding: 10px;
 }
 
 #nav-list a {
@@ -51,20 +65,8 @@ main {
 
 }
 
-#section-01 {
-  background-color: #f00;
-}
-
-#section-02 {
-  background-color: #0f0;
-}
-
-#section-03 {
-  background-color: #00f;
-}
-
-#section-04 {
-  background-color: #fff;
+section {
+  border: 1px solid #000;
 }
 
 .active-section {
@@ -73,9 +75,18 @@ main {
 }
 
 .section-text {
-  color: #333;
+  color: #eee;
+  font-size: 1.5em;
+  font-weight: bold;
+  letter-spacing: .2em;
   margin: 0;
   padding: 100px;
+  /* added for text legibility on multi-colored backgrounds */
+  text-shadow:
+    1px -1px 2px #222,
+    -1px 1px 2px #222,
+    -1px -1px 2px #222,
+    1px 1px 2px #222;    
 }
 
 footer {
