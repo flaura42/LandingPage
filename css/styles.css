@@ -46,10 +46,15 @@ main {
   background-color: #fff;
 }
 
+.active-section {
+  background: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5));
+  border: 4px solid #333;
+}
+
 .section-text {
   color: #333;
   margin: 0;
-  padding: 50px;
+  padding: 100px;
 }
 
 footer {
