@@ -7,6 +7,7 @@ body {
 
 header {
   background-color: #333;
+  border: 2px solid #000;
 }
 
 h1 {
@@ -19,11 +20,31 @@ h1 {
 
 nav {
   background-color: #ddd;
-  height: 50px;
 }
 
 #nav-list {
+  display: inline-flex;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
 
+#nav-list li {
+  border-right: 2px solid #000;
+  padding: 10px 20px;
+}
+
+#nav-list a {
+  color: #333;
+  text-decoration: none;
+}
+
+#nav-list li:hover {
+  background-color: #333;
+}
+
+#nav-list li:hover > a {
+  color: #ddd;
 }
 
 main {
