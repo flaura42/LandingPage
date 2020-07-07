@@ -7,7 +7,7 @@ body {
 
 header {
   background-color: #333;
-  border: 2px solid #000;
+  border: 1px solid #000;
   position: -webkit-sticky;
   position: sticky;
   top: 0;
@@ -21,6 +21,7 @@ h1 {
   text-align: center;
 }
 
+/* nav styles */
 nav {
   background-color: #ddd;
 }
@@ -69,18 +70,13 @@ nav {
   color: #ddd;
 }
 
-main {
-
-}
-
+/* section styles */
 section {
   background: linear-gradient(rgba(75, 75, 75, 0.5), rgba(210, 210, 210, 0.5));
   border: 1px solid #000;
 }
 
 .active-section {
-  /* background: radial-gradient(rgba(210, 210, 210, 1), rgba(75, 75, 75, 1)); */
-  background-color: rgb(48, 41, 251);
   background: linear-gradient(rgb(48, 41, 251), rgb(181, 218, 255), rgb(181, 218, 255), rgba(48, 41, 251));
 }
 
@@ -116,6 +112,7 @@ section {
   text-align: center;
 }
 
+/* footer styles */
 footer {
   background-color: #000;
 }
@@ -124,4 +121,35 @@ footer {
   color: #eee;
   font-size: .75em;
   text-align: center;
+}
+
+
+/* media queries */
+
+@media (max-width: 680px) {
+  .section-text {
+    font-size: 1.35em;
+    padding: 75px;
+  }
+}
+
+@media (max-width: 500px) {
+  h1 {
+    font-size: 1.6em;
+  }
+
+  .section-text {
+    font-size: 1.25em;
+    padding: 50px;
+  }
+}
+
+@media (max-width: 400px) {
+  h1 {
+    font-size: 1.4em;
+  }
+
+  .section-text {
+    padding: 25px;
+  }
 }

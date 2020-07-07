@@ -127,8 +127,8 @@ function addSections(num) {
     section.setAttribute('data-section', i);
     const p = document.createElement('p');
     p.classList.add('section-text');
-    p.innerText = 'This is content for a section. If this were a proper' +
-      'webpage, it would have interesting content.  Since it is not a' + 'proper webpage, it just has this filler text.  Rather boring, right?';
+    p.innerText = 'This is content for a section. If this were a proper ' +
+      'webpage, it would have interesting content.  Since it is not a ' + 'proper webpage, it just has this filler text.  Rather boring, right?';
     section.appendChild(p);
     fragment.appendChild(section);
   }
