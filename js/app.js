@@ -8,54 +8,74 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // make nav li clickable
 document.getElementById('nav-list').addEventListener('click', (event) => {
-  console.log('been clicked, yo');
   const id = event.target.firstChild.innerText;
-  scrollLink(id);
+  scrollSection(id);
 })
+
+// handle scrolling event
+window.addEventListener('scroll', (event) => {
+  // setTimeout(setActive(), 3000);
+  setActive();
+})
+
 
 //----- functions -----//
 
-// FIXME: Adjust 'top' to work going up and down.
+// location test function
+function testLoc(i) {
+  const sections = document.getElementsByTagName('section');
+  const section = sections[i];
+  const coord = section.getBoundingClientRect();
+  console.log(section.id, coord);
+}
+
 // scroll window to selected section
-function scrollLink(id) {
-  console.log('scroll to', id);
-  const dest = document.getElementById(`section-${id}`);
-  const top = dest.getBoundingClientRect().y + window.scrollY - 116;
+function scrollSection(id) {
+  const section = document.getElementById(`section-${id}`);
+  const top = section.getBoundingClientRect().y + window.scrollY - 109;
   window.scrollTo({
     top,
     behavior: 'smooth'
   });
-  activeSection(dest, id);
+  addActive(section, id);
 }
 
-// change active section
-function activeSection(dest, id) {
-  console.log(dest);
-  const sections = document.getElementsByTagName('section');
+// remove active class
+function removeActive(section, id) {
+  section.classList.remove('active-section');
   const navs = document.getElementsByTagName('li');
   const links = document.getElementsByTagName('a');
-  for (let i in sections) {
-    const sect = sections[i];
-    if (sect.className == 'active-section') {
-      sect.classList.remove('active-section');
-    }
-    for (let i in navs) {
-      if (navs[i].className == 'active-nav') {
-        navs[i].classList.remove('active-nav');
-      }
-    }
-    for (let i in links) {
-      if (links[i].className == 'active-link') {
-        links[i].classList.remove('active-link');
-      }
-    }
-  }
   const nav = navs[id - 1];
   const link = navs[id - 1].firstChild;
-  console.log('testing', navs[id - 1].firstChild);
-  dest.className = 'active-section';
+  nav.classList.remove('active-nav');
+  link.classList.remove('active-link');
+}
+
+// change section/nav to active
+function addActive(dest, id) {
+  const navs = document.getElementsByTagName('li');
+  const links = document.getElementsByTagName('a');
+  const nav = navs[id - 1];
+  const link = navs[id - 1].firstChild;
+  dest.classList.add('active-section');
   nav.className = 'active-nav';
   link.className = 'active-link';
+}
+
+// TODO: Have active update when scrolling backwards
+// set which section is active from scrolling
+function setActive() {
+  const sections = document.getElementsByTagName('section');
+  for (const i in sections) {
+    const section = sections[i];
+    const rect = section.getBoundingClientRect();
+    const id = section.getAttribute('data-section');
+    if (rect.bottom < 110 || rect.top > 110) {
+      removeActive(section, id);
+    } else {
+      addActive(section, id);
+    }
+  }
 }
 
 // add sections to the page
@@ -85,7 +105,7 @@ function addSections(num) {
     section.appendChild(p);
     fragment.appendChild(section);
   }
-  main.appendChild(fragment);
+  main.insertBefore(fragment, main.firstChild)
 }
 
 // fill nav menu
@@ -104,9 +124,8 @@ function fillNav() {
     }
     a.href = `#${section.id}`;
     a.addEventListener('click', (event) => {
-      console.log('hear ya', event.target.innerText);
       event.preventDefault();
-      scrollLink(event.target.innerText);
+      scrollSection(event.target.innerText);
     })
     a.innerText = section.dataset.section;
     li.appendChild(a);
