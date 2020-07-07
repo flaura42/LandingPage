@@ -4,25 +4,36 @@
 document.addEventListener('DOMContentLoaded', () => {
   addSections(8);
   fillNav();
-})
+});
 
-// make nav li clickable
-document.getElementById('nav-list').addEventListener('click', (event) => {
-  const id = event.target.getAttribute('data-li');
-  scrollSection(id);
-})
+// handle click events
+const nav = document.getElementById('nav-list');
+nav.addEventListener('click', event => {
+  if (event.target.tagName === 'LI') {
+    const i = event.target.dataset.li;
+    scrollSection(i);
+  }
+  if (event.target.tagName === 'A') {
+    const i = event.target.dataset.a;
+    scrollSection(i);
+  }
+});
 
 // handle scrolling event
 window.addEventListener('scroll', (event) => {
   toggleActive();
-})
+});
 
 
-//----- functions -----//
+//----- global variables -----//
+const sections = document.getElementsByTagName('section');
+const fragment = document.createDocumentFragment();
+
+
+//----- helper functions -----//
 
 // location test function
 function testLoc(i) {
-  const sections = document.getElementsByTagName('section');
   const section = sections[i];
   const coord = section.getBoundingClientRect();
   console.log(section.id, coord);
@@ -35,6 +46,9 @@ function sectionLoc(id) {
   return loc;
 }
 
+
+//----- functions -----//
+
 // scroll window to selected section
 function scrollSection(id) {
   const section = document.getElementById(`section-${id}`);
@@ -44,12 +58,11 @@ function scrollSection(id) {
     top,
     behavior: 'smooth'
   });
-  const sections = document.getElementsByTagName('section');
   for (let i=0; i<sections.length; i++) {
     const sect = sections[i];
-    let classes = sect.classList.contains('active-section');
+    const classes = sect.classList.contains('active-section');
     if (classes) {
-      let i = sect.getAttribute('data-section');
+      const i = sect.getAttribute('data-section');
       removeActive(section, i);
     }
   }
@@ -58,7 +71,6 @@ function scrollSection(id) {
 
 // change active section when scrolling
 function toggleActive() {
-  const sections = document.getElementsByTagName('section');
   for (let i=0; i<sections.length; i++) {
     const section = sections[i];
     const id = section.getAttribute('data-section');
@@ -96,57 +108,53 @@ function removeActive(section, id) {
 
 // add sections to the page
 function addSections(num) {
-  const main = document.getElementsByTagName('main')[0];
-  const fragment = document.createDocumentFragment();
-
+  const main = document.querySelector('main');
   for (let i=1; i<=num; i++) {
     // pick random colors for sections
-    let r = Math.floor(Math.random()*256);
-    let g = Math.floor(Math.random()*256);
-    let b = Math.floor(Math.random()*256);
-    let color = `rgb(${r}, ${g}, ${b})`;
+    const r = Math.floor(Math.random()*256);
+    const g = Math.floor(Math.random()*256);
+    const b = Math.floor(Math.random()*256);
+    const color = `rgb(${r}, ${g}, ${b})`;
 
     // create sections
     const section = document.createElement('section');
     section.id = `section-${i}`;
     // give first section active class
     if (i === 1) {
-      section.className = 'active-section';
+      section.classList.add('active-section');
     }
     section.setAttribute('style', `background-color: ${color};`);
     section.setAttribute('data-section', i);
     const p = document.createElement('p');
-    p.className = 'section-text';
-    p.innerText = 'This is content for a section. If this were a proper webpage, it would have interesting content.  Since it is not a proper webpage, it just has this filler text.  Rather boring, right?';
+    p.classList.add('section-text');
+    p.innerText = 'This is content for a section. If this were a proper' +
+      'webpage, it would have interesting content.  Since it is not a' + 'proper webpage, it just has this filler text.  Rather boring, right?';
     section.appendChild(p);
     fragment.appendChild(section);
   }
-  main.insertBefore(fragment, main.firstChild)
+  main.insertBefore(fragment, main.firstChild);
 }
 
 // fill nav menu
 function fillNav() {
-  const sections = document.getElementsByTagName('section');
   const nav = document.getElementById('nav-list');
-  const fragment = document.createDocumentFragment();
-
   for (let i=0; i<sections.length; i++) {
     const section = sections[i];
     const li = document.createElement('li');
-    const num = section.dataset.section
+    const num = section.dataset.section;
     li.setAttribute('data-li', num);
     const a = document.createElement('a');
     // give first nav active class
     if (section.id === 'section-1') {
-      li.className = 'active-nav';
-      a.className = 'active-link'
+      li.classList.add('active-nav');
+      a.classList.add('active-link');
     }
     a.href = `#${section.id}`;
-    a.setAttribute('data-a', num)
+    a.setAttribute('data-a', num);
+    // cancel the default event
     a.addEventListener('click', (event) => {
       event.preventDefault();
-      scrollSection(event.target.dataset.a);
-    })
+    });
     a.innerText = section.dataset.section;
     li.appendChild(a);
     fragment.appendChild(li);
