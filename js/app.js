@@ -8,14 +8,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // make nav li clickable
 document.getElementById('nav-list').addEventListener('click', (event) => {
-  const id = event.target.firstChild.innerText;
+  const id = event.target.getAttribute('data-li');
   scrollSection(id);
 })
 
 // handle scrolling event
 window.addEventListener('scroll', (event) => {
-  // setTimeout(setActive(), 3000);
-  setActive();
+  toggleActive();
 })
 
 
@@ -29,53 +28,70 @@ function testLoc(i) {
   console.log(section.id, coord);
 }
 
+// find section location
+function sectionLoc(id) {
+  const section = document.getElementById(`section-${id}`);
+  const loc = section.getBoundingClientRect();
+  return loc;
+}
+
 // scroll window to selected section
 function scrollSection(id) {
   const section = document.getElementById(`section-${id}`);
-  const top = section.getBoundingClientRect().y + window.scrollY - 109;
+  const loc = sectionLoc(id);
+  const top = loc.y + window.scrollY - 109;
   window.scrollTo({
     top,
     behavior: 'smooth'
   });
+  const sections = document.getElementsByTagName('section');
+  for (let i=0; i<sections.length; i++) {
+    const sect = sections[i];
+    let classes = sect.classList.contains('active-section');
+    if (classes) {
+      let i = sect.getAttribute('data-section');
+      removeActive(section, i);
+    }
+  }
   addActive(section, id);
+}
+
+// change active section when scrolling
+function toggleActive() {
+  const sections = document.getElementsByTagName('section');
+  for (let i=0; i<sections.length; i++) {
+    const section = sections[i];
+    const id = section.getAttribute('data-section');
+    const rect = sectionLoc(id);
+    const classes = section.classList.contains('active-section');
+    if (rect.bottom < 110 || rect.top > 110) {
+      if (classes) {
+        removeActive(section, id);
+      }
+    } else {
+      if (classes === false) {
+        addActive(section, id);
+      }
+    }
+  }
+}
+
+// change section/nav to active
+function addActive(section, id) {
+  const nav = document.querySelector(`[data-li='${id}']`);
+  const link = document.querySelector(`[data-a='${id}']`);
+  section.classList.add('active-section');
+  nav.classList.add('active-nav');
+  link.classList.add('active-link');
 }
 
 // remove active class
 function removeActive(section, id) {
+  const nav = document.querySelector(`[data-li='${id}']`);
+  const link = document.querySelector(`[data-a='${id}']`);
   section.classList.remove('active-section');
-  const navs = document.getElementsByTagName('li');
-  const links = document.getElementsByTagName('a');
-  const nav = navs[id - 1];
-  const link = navs[id - 1].firstChild;
   nav.classList.remove('active-nav');
   link.classList.remove('active-link');
-}
-
-// change section/nav to active
-function addActive(dest, id) {
-  const navs = document.getElementsByTagName('li');
-  const links = document.getElementsByTagName('a');
-  const nav = navs[id - 1];
-  const link = navs[id - 1].firstChild;
-  dest.classList.add('active-section');
-  nav.className = 'active-nav';
-  link.className = 'active-link';
-}
-
-// TODO: Have active update when scrolling backwards
-// set which section is active from scrolling
-function setActive() {
-  const sections = document.getElementsByTagName('section');
-  for (const i in sections) {
-    const section = sections[i];
-    const rect = section.getBoundingClientRect();
-    const id = section.getAttribute('data-section');
-    if (rect.bottom < 110 || rect.top > 110) {
-      removeActive(section, id);
-    } else {
-      addActive(section, id);
-    }
-  }
 }
 
 // add sections to the page
@@ -114,8 +130,11 @@ function fillNav() {
   const nav = document.getElementById('nav-list');
   const fragment = document.createDocumentFragment();
 
-  for (const section of sections) {
+  for (let i=0; i<sections.length; i++) {
+    const section = sections[i];
     const li = document.createElement('li');
+    const num = section.dataset.section
+    li.setAttribute('data-li', num);
     const a = document.createElement('a');
     // give first nav active class
     if (section.id === 'section-1') {
@@ -123,9 +142,10 @@ function fillNav() {
       a.className = 'active-link'
     }
     a.href = `#${section.id}`;
+    a.setAttribute('data-a', num)
     a.addEventListener('click', (event) => {
       event.preventDefault();
-      scrollSection(event.target.innerText);
+      scrollSection(event.target.dataset.a);
     })
     a.innerText = section.dataset.section;
     li.appendChild(a);
