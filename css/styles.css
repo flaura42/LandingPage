@@ -79,13 +79,18 @@ section {
 }
 
 .active-section {
-  background: linear-gradient(rgba(220, 220, 100, 1), rgba(153, 153, 0, 1));
-  border: 4px solid #00a;
+  /* background: radial-gradient(rgba(210, 210, 210, 1), rgba(75, 75, 75, 1)); */
+  background-color: rgb(48, 41, 251);
+  background: linear-gradient(rgb(48, 41, 251), rgb(181, 218, 255), rgb(181, 218, 255), rgba(48, 41, 251));
 }
 
 .active-section p {
-  color: #00a;
-  text-shadow: none;
+  color: #222;
+  text-shadow:
+    1px -1px 2px #ddd,
+    -1px 1px 2px #ddd,
+    -1px -1px 2px #ddd,
+    1px 1px 2px #ddd;
 }
 
 .section-text {
@@ -101,6 +106,14 @@ section {
     -1px 1px 2px #222,
     -1px -1px 2px #222,
     1px 1px 2px #222;
+}
+
+.blank {
+  background-color: #333;
+  color: #ddd;
+  margin: 0;
+  padding: 180px;
+  text-align: center;
 }
 
 footer {
